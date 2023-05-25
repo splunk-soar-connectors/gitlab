@@ -502,7 +502,7 @@
             },
             {
                 "module": "beautifulsoup4",
-                "input_file": "wheels/beautifulsoup4-4.9.1-py2-none-any.whl"
+                "input_file": "wheels/beautifulsoup4-4.12.2-py3-none-any.whl"
             },
             {
                 "module": "certifi",
