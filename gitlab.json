@@ -494,7 +494,7 @@
             "versions": "EQ(*)"
         }
     ],
-    "pip_dependencies": {
+    "pip3_dependencies": {
         "wheel": [
             {
                 "module": "backports.functools_lru_cache",
