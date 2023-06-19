@@ -6,7 +6,7 @@ Connector Version: 1\.0\.3
 Product Vendor: GitLab  
 Product Name: GitLab  
 Product Version Supported (regex): "\.\*"  
-Minimum Product Version: 5\.3 
+Minimum Product Version: 6\.0\.0 
 
 This app integrates with a GitLab instance to perform various lookups and execute CI/CD pipelines
 
