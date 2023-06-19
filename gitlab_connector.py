@@ -137,17 +137,9 @@ class GitlabConnector(BaseConnector):
             error_msg = "Connection refused by the server: {0}".format(url)
             return RetVal(action_result.set_status(phantom.APP_ERROR, "Error Connecting to server. Details: {0}".format(str(error_msg))), resp_json)
         except Exception as e:
-            if e.message:
-                if isinstance(e.message, basestring):
-                    error_msg = UnicodeDammit(e.message).unicode_markup.encode('UTF-8')
-                else:
-                    try:
-                        error_msg = UnicodeDammit(e.message).unicode_markup.encode('utf-8')
-                    except:
-                        error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
-            else:
-                error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "Error Connecting to server. Details: {0}".format(error_msg)), resp_json)
+            import traceback
+            error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters. " + traceback.format_exc()
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "Error Connecting to server. Details: {0}".format(e)), resp_json)
 
         return self._process_response(r, action_result)
 
@@ -346,7 +338,7 @@ class GitlabConnector(BaseConnector):
         optional_config_name = config.get('optional_config_name')
         """
 
-        self._base_url = "{0}/api/v4".format(UnicodeDammit(config['gitlab_location']).unicode_markup.encode('UTF-8'))
+        self._base_url = "http://{0}/api/v4".format(config['gitlab_location'])
         self._personal_access_token = config['personal_access_token']
 
         self._rest_auth_header = {"PRIVATE-TOKEN": self._personal_access_token}
