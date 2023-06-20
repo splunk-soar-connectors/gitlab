@@ -180,6 +180,9 @@
                 {
                     "data_path": "action_result.parameter.project_id",
                     "data_type": "numeric",
+                    "contains": [
+                        "gitlab project id"
+                    ],
                     "column_name": "Project ID",
                     "column_order": 0
                 },
@@ -254,12 +257,18 @@
                 {
                     "data_path": "action_result.parameter.project_id",
                     "data_type": "string",
+                    "contains": [
+                        "gitlab project id"
+                    ],
                     "column_name": "Project ID",
                     "column_order": 0
                 },
                 {
                     "data_path": "action_result.parameter.trigger_name",
                     "data_type": "string",
+                    "contains": [
+                        "gitlab trigger"
+                    ],
                     "column_name": "Trigger Name",
                     "column_order": 1
                 },
@@ -327,6 +336,9 @@
                 {
                     "data_path": "action_result.parameter.project_id",
                     "data_type": "numeric",
+                    "contains": [
+                        "gitlab project id"
+                    ],
                     "column_name": "Project ID",
                     "column_order": 0
                 },
@@ -428,18 +440,27 @@
                 {
                     "data_path": "action_result.parameter.project_id",
                     "data_type": "numeric",
+                    "contains": [
+                        "gitlab project id"
+                    ],
                     "column_name": "Project ID",
                     "column_order": 0
                 },
                 {
                     "data_path": "action_result.parameter.trigger_token",
                     "data_type": "string",
+                    "contains": [
+                        "gitlab trigger"
+                    ],
                     "column_name": "Trigger Token",
                     "column_order": 1
                 },
                 {
                     "data_path": "action_result.parameter.branch",
                     "data_type": "string",
+                    "contains": [
+                        "branch name"
+                    ],
                     "column_name": "Branch",
                     "column_order": 3
                 },
