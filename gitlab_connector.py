@@ -1,5 +1,5 @@
 # File: gitlab_connector.py
-# Copyright (c) Peter Bertel, 2020-2023.
+# Copyright (c) Peter Bertel, 2020-2023
 #
 # Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)
 import json
@@ -39,7 +39,7 @@ class GitlabConnector(BaseConnector):
 
     def _process_empty_response(self, response, action_result):
 
-        if response.status_code in [200, 204]:
+        if response.ok:
             return RetVal(phantom.APP_SUCCESS, {})
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, "Empty response and no information in the header, "

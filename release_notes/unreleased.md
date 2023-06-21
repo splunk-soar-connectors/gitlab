@@ -1,2 +1,2 @@
 **Unreleased**
-* Converted from python2 to python3
+* Compatibility changes for Python 3 support
