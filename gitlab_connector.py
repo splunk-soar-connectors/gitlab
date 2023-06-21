@@ -375,7 +375,7 @@ class GitlabConnector(BaseConnector):
         optional_config_name = config.get('optional_config_name')
         """
 
-        self._base_url = "http://{0}/api/v4".format(config['gitlab_location'])
+        self._base_url = consts.GITLAB_API_BASE_URL.format(config['gitlab_location'])
         self._personal_access_token = config['personal_access_token']
 
         self._rest_auth_header = {"PRIVATE-TOKEN": self._personal_access_token}

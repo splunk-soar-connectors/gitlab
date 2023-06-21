@@ -5,7 +5,7 @@
 
 # Define your constants here
 
-GITLAB_API_PREFIX = "/api/v4"
+GITLAB_API_BASE_URL = "http://{0}/api/v4"
 GITLAB_DEFAULT_TIMEOUT = 30
 
 # messages
