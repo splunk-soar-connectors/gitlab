@@ -2,11 +2,11 @@
 # GitLab
 
 Publisher: Peter Bertel  
-Connector Version: 1\.0\.1  
+Connector Version: 1\.0\.3 
 Product Vendor: GitLab  
 Product Name: GitLab  
 Product Version Supported (regex): "\.\*"  
-Minimum Product Version: 4\.6\.19142  
+Minimum Product Version: 6\.0\.0 
 
 This app integrates with a GitLab instance to perform various lookups and execute CI/CD pipelines
 
