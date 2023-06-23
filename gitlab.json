@@ -9,12 +9,13 @@
     "product_name": "GitLab",
     "product_version_regex": ".*",
     "publisher": "Peter Bertel",
-    "license": "Copyright (c) Peter Bertel, 2020",
-    "app_version": "1.0.0",
-    "utctime_updated": "2019-08-26T01:28:27.791651Z",
+    "license": "Copyright (c) Peter Bertel, 2020-2023",
+    "app_version": "2.0.0",
+    "python_version": "3",
+    "utctime_updated": "2022-01-07T20:39:55.000000Z",
     "package_name": "phantom_gitlab",
     "main_module": "gitlab_connector.py",
-    "min_phantom_version": "4.6.19142",
+    "min_phantom_version": "6.0.0",
     "app_wizard_version": "1.0.0",
     "configuration": {
         "gitlab_location": {
@@ -83,7 +84,7 @@
                     "data_path": "action_result.data.*.username",
                     "data_type": "string",
                     "example_values": [
-                        "phantom"
+                        "testuser"
                     ],
                     "contains": [
                         "user name"
@@ -170,7 +171,7 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                      "gitlab project id"
+                        "gitlab project id"
                     ],
                     "order": 0
                 }
@@ -179,6 +180,9 @@
                 {
                     "data_path": "action_result.parameter.project_id",
                     "data_type": "numeric",
+                    "contains": [
+                        "gitlab project id"
+                    ],
                     "column_name": "Project ID",
                     "column_order": 0
                 },
@@ -234,7 +238,7 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                      "gitlab project id"
+                        "gitlab project id"
                     ],
                     "order": 0
                 },
@@ -244,7 +248,7 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                      "gitlab trigger"
+                        "gitlab trigger"
                     ],
                     "order": 1
                 }
@@ -253,12 +257,18 @@
                 {
                     "data_path": "action_result.parameter.project_id",
                     "data_type": "string",
+                    "contains": [
+                        "gitlab project id"
+                    ],
                     "column_name": "Project ID",
                     "column_order": 0
                 },
                 {
                     "data_path": "action_result.parameter.trigger_name",
                     "data_type": "string",
+                    "contains": [
+                        "gitlab trigger"
+                    ],
                     "column_name": "Trigger Name",
                     "column_order": 1
                 },
@@ -317,7 +327,7 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                      "gitlab project id"
+                        "gitlab project id"
                     ],
                     "order": 0
                 }
@@ -326,6 +336,9 @@
                 {
                     "data_path": "action_result.parameter.project_id",
                     "data_type": "numeric",
+                    "contains": [
+                        "gitlab project id"
+                    ],
                     "column_name": "Project ID",
                     "column_order": 0
                 },
@@ -397,7 +410,7 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                      "gitlab project id"
+                        "gitlab project id"
                     ],
                     "order": 0
                 },
@@ -407,7 +420,7 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                      "gitlab trigger"
+                        "gitlab trigger"
                     ],
                     "order": 1
                 },
@@ -417,7 +430,7 @@
                     "required": true,
                     "primary": true,
                     "contains": [
-                      "branch name"
+                        "branch name"
                     ],
                     "default": "master",
                     "order": 2
@@ -427,18 +440,27 @@
                 {
                     "data_path": "action_result.parameter.project_id",
                     "data_type": "numeric",
+                    "contains": [
+                        "gitlab project id"
+                    ],
                     "column_name": "Project ID",
                     "column_order": 0
                 },
                 {
                     "data_path": "action_result.parameter.trigger_token",
                     "data_type": "string",
+                    "contains": [
+                        "gitlab trigger"
+                    ],
                     "column_name": "Trigger Token",
                     "column_order": 1
                 },
                 {
                     "data_path": "action_result.parameter.branch",
                     "data_type": "string",
+                    "contains": [
+                        "branch name"
+                    ],
                     "column_name": "Branch",
                     "column_order": 3
                 },
@@ -492,5 +514,29 @@
             },
             "versions": "EQ(*)"
         }
-    ]
+    ],
+    "pip_dependencies": {
+        "wheel": [
+            {
+                "module": "beautifulsoup4",
+                "input_file": "wheels/py3/beautifulsoup4-4.9.1-py3-none-any.whl"
+            },
+            {
+                "module": "soupsieve",
+                "input_file": "wheels/py3/soupsieve-2.3.2.post1-py3-none-any.whl"
+            }
+        ]
+    },
+    "pip39_dependencies": {
+        "wheel": [
+            {
+                "module": "beautifulsoup4",
+                "input_file": "wheels/py3/beautifulsoup4-4.9.1-py3-none-any.whl"
+            },
+            {
+                "module": "soupsieve",
+                "input_file": "wheels/py3/soupsieve-2.4.1-py3-none-any.whl"
+            }
+        ]
+    }
 }
