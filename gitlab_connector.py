@@ -1,17 +1,19 @@
 # File: gitlab_connector.py
-# Copyright (c) Peter Bertel, 2020
+# Copyright (c) Peter Bertel, 2020-2023
 #
 # Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)
+import json
+import sys
 
 # Phantom App imports
 import phantom.app as phantom
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
-
 # Usage of the consts file is recommended
 import requests
-import json
 from bs4 import BeautifulSoup, UnicodeDammit
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
+
+import gitlab_consts as consts
 
 
 class RetVal(tuple):
@@ -37,10 +39,11 @@ class GitlabConnector(BaseConnector):
 
     def _process_empty_response(self, response, action_result):
 
-        if response.status_code == 200:
+        if response.ok:
             return RetVal(phantom.APP_SUCCESS, {})
 
-        return RetVal(action_result.set_status(phantom.APP_ERROR, "Empty response and no information in the header"), None)
+        return RetVal(action_result.set_status(phantom.APP_ERROR, "Empty response and no information in the header, "
+                                                                  "Status Code: {}".format(response.status_code)), None)
 
     def _process_html_response(self, response, action_result):
 
@@ -49,17 +52,20 @@ class GitlabConnector(BaseConnector):
 
         try:
             soup = BeautifulSoup(response.text, "html.parser")
+            # Remove the script, style, footer and navigation part from the HTML message
+            for element in soup(["script", "style", "footer", "nav"]):
+                element.extract()
             error_text = soup.text
             split_lines = error_text.split('\n')
             split_lines = [x.strip() for x in split_lines if x.strip()]
             error_text = '\n'.join(split_lines)
-        except:
+        except Exception:
             error_text = "Cannot parse error details"
 
         message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code,
                                                                       error_text)
 
-        message = message.replace(u'{', '{{').replace(u'}', '}}')
+        message = message.replace('{', '{{').replace('}', '}}')
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
@@ -77,7 +83,7 @@ class GitlabConnector(BaseConnector):
 
         # You should process the error returned in the json
         message = "Error from server. Status Code: {0} Data from server: {1}".format(
-            r.status_code, r.text.replace(u'{', '{{').replace(u'}', '}}'))
+            r.status_code, r.text.replace('{', '{{').replace('}', '}}'))
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
@@ -112,6 +118,33 @@ class GitlabConnector(BaseConnector):
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
+    def _get_error_message_from_exception(self, e):
+        """
+        Get appropriate error message from the exception.
+        :param e: Exception object
+        :return: error message
+        """
+        error_code = None
+        error_message = consts.GITLAB_ERROR_MESSAGE_UNKNOWN
+
+        self.error_print("Exception occurred.", dump_object=e)
+        try:
+            if hasattr(e, "args"):
+                if len(e.args) > 1:
+                    error_code = e.args[0]
+                    error_message = e.args[1]
+                elif len(e.args) == 1:
+                    error_message = e.args[0]
+        except Exception:
+            self.error_print("Exception occurred while getting error code and message")
+
+        if not error_code:
+            error_text = "Error Message: {}".format(error_message)
+        else:
+            error_text = "Error Code: {}. Error Message: {}".format(error_code, error_message)
+
+        return error_text
+
     def _make_rest_call(self, endpoint, action_result, method="get", **kwargs):
         # **kwargs can be any additional parameters that requests.request accepts
 
@@ -135,19 +168,13 @@ class GitlabConnector(BaseConnector):
                 **kwargs)
         except requests.exceptions.ConnectionError:
             error_msg = "Connection refused by the server: {0}".format(url)
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "Error Connecting to server. Details: {0}".format(str(error_msg))), resp_json)
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "Error Connecting to server. Details: {0}"
+                                                   .format(str(error_msg))), resp_json)
         except Exception as e:
-            if e.message:
-                if isinstance(e.message, basestring):
-                    error_msg = UnicodeDammit(e.message).unicode_markup.encode('UTF-8')
-                else:
-                    try:
-                        error_msg = UnicodeDammit(e.message).unicode_markup.encode('utf-8')
-                    except:
-                        error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
-            else:
-                error_msg = "Unknown error occurred. Please check the asset configuration and|or action parameters."
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "Error Connecting to server. Details: {0}".format(error_msg)), resp_json)
+            error_message = self._get_error_message_from_exception(e)
+            return RetVal(action_result.set_status(phantom.APP_ERROR,
+                                                   "Error Connecting to server. Details: {0}"
+                                                   .format(error_message)), resp_json)
 
         return self._process_response(r, action_result)
 
@@ -211,7 +238,8 @@ class GitlabConnector(BaseConnector):
         project_id = param['project_id']
 
         # make rest call
-        ret_val, response = self._make_rest_call('/projects/{}/repository/branches'.format(project_id), action_result, params=None, headers=self._rest_auth_header)
+        ret_val, response = self._make_rest_call('/projects/{}/repository/branches'.format(project_id), action_result,
+                                                 params=None, headers=self._rest_auth_header)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -255,7 +283,8 @@ class GitlabConnector(BaseConnector):
         project_id = param['project_id']
 
         # make rest call
-        ret_val, response = self._make_rest_call('/projects/{}/triggers'.format(project_id), action_result, params=None, headers=self._rest_auth_header)
+        ret_val, response = self._make_rest_call('/projects/{}/triggers'.format(project_id), action_result,
+                                                 params=None, headers=self._rest_auth_header)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -346,7 +375,7 @@ class GitlabConnector(BaseConnector):
         optional_config_name = config.get('optional_config_name')
         """
 
-        self._base_url = "{0}/api/v4".format(UnicodeDammit(config['gitlab_location']).unicode_markup.encode('UTF-8'))
+        self._base_url = consts.GITLAB_API_BASE_URL.format(config['gitlab_location'])
         self._personal_access_token = config['personal_access_token']
 
         self._rest_auth_header = {"PRIVATE-TOKEN": self._personal_access_token}
@@ -362,8 +391,9 @@ class GitlabConnector(BaseConnector):
 
 if __name__ == '__main__':
 
-    import pudb
     import argparse
+
+    import pudb
 
     pudb.set_trace()
 
@@ -390,7 +420,7 @@ if __name__ == '__main__':
             login_url = GitlabConnector._get_phantom_base_url() + '/login'
 
             print("Accessing the Login page")
-            r = requests.get(login_url, verify=False)
+            r = requests.get(login_url, verify=False, timeout=consts.GITLAB_DEFAULT_TIMEOUT)
             csrftoken = r.cookies['csrftoken']
 
             data = dict()
@@ -403,11 +433,12 @@ if __name__ == '__main__':
             headers['Referer'] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, verify=False, data=data, headers=headers)
+            r2 = requests.post(login_url, verify=False, data=data, headers=headers,
+                               timeout=consts.GITLAB_DEFAULT_TIMEOUT)
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print("Unable to get session id from the platform. Error: " + str(e))
-            exit(1)
+            sys.exit(1)
 
     with open(args.input_test_json) as f:
         in_json = f.read()
@@ -424,4 +455,4 @@ if __name__ == '__main__':
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))
 
-    exit(0)
+    sys.exit(0)
