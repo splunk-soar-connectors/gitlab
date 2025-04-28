@@ -1,7 +1,7 @@
 # GitLab
 
 Publisher: Peter Bertel \
-Connector Version: 2.0.0 \
+Connector Version: 2.0.1 \
 Product Vendor: GitLab \
 Product Name: GitLab \
 Minimum Product Version: 6.0.0
