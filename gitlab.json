@@ -11,7 +11,7 @@
     "publisher": "Peter Bertel",
     "license": "Copyright (c) Peter Bertel, 2020-2025",
     "app_version": "2.0.1",
-    "python_version": "3",
+    "python_version": ["3.9", "3.13"],
     "utctime_updated": "2025-04-28T19:51:42.975316Z",
     "package_name": "phantom_gitlab",
     "main_module": "gitlab_connector.py",
