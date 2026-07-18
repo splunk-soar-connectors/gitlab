@@ -16,6 +16,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
 **gitlab_location** | required | string | The Hostname or IP address of the GitLab instance |
 **personal_access_token** | required | password | Access token for a GitLab user |
+**verify_server_cert** | optional | boolean | Verify the GitLab server TLS certificate |
 
 ### Supported Actions
 
