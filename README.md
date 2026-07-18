@@ -1,9 +1,9 @@
 # GitLab
 
-Publisher: Peter Bertel \
-Connector Version: 2.0.1 \
-Product Vendor: GitLab \
-Product Name: GitLab \
+Publisher: Peter Bertel <br>
+Connector Version: 2.0.1 <br>
+Product Vendor: GitLab <br>
+Product Name: GitLab <br>
 Minimum Product Version: 6.0.0
 
 This app integrates with a GitLab instance to perform various lookups and execute CI/CD pipelines
@@ -19,19 +19,19 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration \
-[list users](#action-list-users) - List all the users in the GitLab instance \
-[list projects](#action-list-projects) - List all the projects in the GitLab instance \
-[list branches](#action-list-branches) - List the branches of a GitLab project \
-[create trigger](#action-create-trigger) - Create a new pipeline trigger for a GitLab project \
-[list triggers](#action-list-triggers) - List the pipeline triggers of a GitLab project \
+[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration <br>
+[list users](#action-list-users) - List all the users in the GitLab instance <br>
+[list projects](#action-list-projects) - List all the projects in the GitLab instance <br>
+[list branches](#action-list-branches) - List the branches of a GitLab project <br>
+[create trigger](#action-create-trigger) - Create a new pipeline trigger for a GitLab project <br>
+[list triggers](#action-list-triggers) - List the pipeline triggers of a GitLab project <br>
 [run pipeline](#action-run-pipeline) - Execute a pipeline on a particular branch of a project
 
 ## action: 'test connectivity'
 
 Validate the asset configuration for connectivity using supplied configuration
 
-Type: **test** \
+Type: **test** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -46,7 +46,7 @@ No Output
 
 List all the users in the GitLab instance
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -70,7 +70,7 @@ action_result.data.\*.can_create_project | boolean | | True False |
 
 List all the projects in the GitLab instance
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -93,7 +93,7 @@ action_result.data.\*.\*.path | string | | path-to/project-name |
 
 List the branches of a GitLab project
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -118,7 +118,7 @@ action_result.data.\*.name | string | | master |
 
 Create a new pipeline trigger for a GitLab project
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -145,7 +145,7 @@ summary.total_objects_successful | numeric | | |
 
 List the pipeline triggers of a GitLab project
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 List the triggers of a GitLab project.
@@ -174,7 +174,7 @@ action_result.data.\*.id | numeric | | 1 |
 
 Execute a pipeline on a particular branch of a project
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 Execute a pipeline on a particular branch of a project. GitLab CI/CD must be configured on the project for this action to succeed.
@@ -206,7 +206,7 @@ ______________________________________________________________________
 
 Auto-generated Splunk SOAR Connector documentation.
 
-Copyright 2025 Splunk Inc.
+Copyright 2026 Splunk Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
