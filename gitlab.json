@@ -9,9 +9,9 @@
     "product_name": "GitLab",
     "product_version_regex": ".*",
     "publisher": "Peter Bertel",
-    "license": "Copyright (c) Peter Bertel, 2020-2025",
+    "license": "Copyright (c) Peter Bertel, 2020-2026",
     "app_version": "2.0.1",
-    "python_version": "3",
+    "python_version": "3.9, 3.13",
     "utctime_updated": "2025-04-28T19:51:42.975316Z",
     "package_name": "phantom_gitlab",
     "main_module": "gitlab_connector.py",
@@ -29,6 +29,12 @@
             "data_type": "password",
             "required": true,
             "order": 1
+        },
+        "verify_server_cert": {
+            "description": "Verify the GitLab server TLS certificate",
+            "data_type": "boolean",
+            "default": true,
+            "order": 2
         }
     },
     "actions": [
@@ -514,5 +520,11 @@
             },
             "versions": "EQ(*)"
         }
-    ]
+    ],
+    "pip39_dependencies": {
+        "wheel": []
+    },
+    "pip313_dependencies": {
+        "wheel": []
+    }
 }

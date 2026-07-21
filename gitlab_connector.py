@@ -1,5 +1,5 @@
 # File: gitlab_connector.py
-# Copyright (c) Peter Bertel, 2020-2025
+# Copyright (c) Peter Bertel, 2020-2026
 #
 # Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)
 import json
@@ -160,7 +160,7 @@ class GitlabConnector(BaseConnector):
             r = request_func(
                 url,
                 # auth=(username, password),  # basic authentication
-                verify=config.get("verify_server_cert", False),
+                verify=config.get("verify_server_cert", True),
                 **kwargs,
             )
         except requests.exceptions.ConnectionError:
@@ -221,11 +221,26 @@ class GitlabConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    @staticmethod
+    def _validate_project_id(value, action_result):
+        try:
+            if isinstance(value, bool):
+                raise ValueError
+            project_id = int(value)
+            if project_id <= 0:
+                raise ValueError
+        except (TypeError, ValueError):
+            action_result.set_status(phantom.APP_ERROR, "Project ID must be a positive integer")
+            return None
+        return project_id
+
     def _handle_list_branches(self, param):
         self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        project_id = param["project_id"]
+        project_id = self._validate_project_id(param.get("project_id"), action_result)
+        if project_id is None:
+            return action_result.get_status()
 
         # make rest call
         ret_val, response = self._make_rest_call(
@@ -247,7 +262,9 @@ class GitlabConnector(BaseConnector):
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        project_id = param["project_id"]
+        project_id = self._validate_project_id(param.get("project_id"), action_result)
+        if project_id is None:
+            return action_result.get_status()
         trigger_name = param["trigger_name"]
         trigger_data = {"description": trigger_name}
 
@@ -270,7 +287,9 @@ class GitlabConnector(BaseConnector):
         self.save_progress(f"In action handler for: {self.get_action_identifier()}")
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        project_id = param["project_id"]
+        project_id = self._validate_project_id(param.get("project_id"), action_result)
+        if project_id is None:
+            return action_result.get_status()
 
         # make rest call
         ret_val, response = self._make_rest_call(f"/projects/{project_id}/triggers", action_result, params=None, headers=self._rest_auth_header)
@@ -292,7 +311,9 @@ class GitlabConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         trigger_token = UnicodeDammit(param["trigger_token"]).unicode_markup.encode("utf-8")
-        project_id = param["project_id"]
+        project_id = self._validate_project_id(param.get("project_id"), action_result)
+        if project_id is None:
+            return action_result.get_status()
         branch = param["branch"]
 
         rest_params = {"token": trigger_token, "ref": branch}
